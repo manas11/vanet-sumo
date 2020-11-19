@@ -20,7 +20,7 @@ sudo apt-get install sumo sumo-tools sumo-doc
 
 > Check your SUMO version using `sumo --version`
 
-### 2. Downloading Map of area where simulation is to be run
+### 2. Downloading Map of area where simulation is to be run, and converting to ns-3 understandable format
 There are 2 ways to export map of area where simulation is to be run:
 > Step I is preferrable as it offers an interactive UI for setting up various parameters.
 > Refer [SUMO Tutorials](https://sumo.dlr.de/docs/Tutorials.html) for more details about SUMO related steps
@@ -100,6 +100,8 @@ sumo -c map.sumo.cfg —-fcd-output maptrace.xml
 ```
 python /usr/share/sumo/tools/traceExporter.py -i trace.xml --ns2mobility-output=/home/$USERNAME/$some_desired_output_path/mobility.tcl
 ```
+
+### 3. Make changes in ns-3 vanet-routing-compare.cc and run program 
 
 
 
