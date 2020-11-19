@@ -81,9 +81,9 @@ cd $map_dir
 # b. Run this command
 netconvert --osm-files map.osm -o map.net.xml
 
-# c. Visit [Recommended typemaps SUMO](https://sumo.dlr.de/docs/Networks/Import/OpenStreetMap.html#recommended_typemaps) and create your typemap.xml file containing various configurations and parameters. Store typemap.xml in $map_dir
+# c. Visit Recommended typemaps: https://sumo.dlr.de/docs/Networks/Import/OpenStreetMap.html#recommended_typemaps and create your typemap.xml file containing various configurations and parameters. Store typemap.xml in $map_dir
 
-# d. Import polygons taking help from [Polygon import](https://sumo.dlr.de/docs/Networks/Import/OpenStreetMap.html#importing_additional_polygons_buildings_water_etc)
+# d. Import polygons taking help from https://sumo.dlr.de/docs/Networks/Import/OpenStreetMap.html#importing_additional_polygons_buildings_water_etc
 
 polyconvert --net-file map.net.xml --osm-files map.osm --type-file typemap.xml -o map.poly.xml
 
@@ -99,6 +99,5 @@ sumo -c map.sumo.cfg —-fcd-output maptrace.xml
 python /usr/share/sumo/tools/traceExporter.py -i trace.xml --ns2mobility-output=/home/$USERNAME/$some_desired_output_path/mobility.tcl
 
 ```
-
 
 
