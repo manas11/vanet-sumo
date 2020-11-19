@@ -80,24 +80,26 @@ cd $map_dir
 
 # b. Run this command
 netconvert --osm-files map.osm -o map.net.xml
+```
+5. Visit Recommended typemaps: [Recommended typemaps](https://sumo.dlr.de/docs/Networks/Import/OpenStreetMap.html#recommended_typemaps).
+Create your typemap.xml file containing various configurations and parameters. Store typemap.xml in $map_dir
 
-# c. Visit Recommended typemaps: https://sumo.dlr.de/docs/Networks/Import/OpenStreetMap.html#recommended_typemaps and create your typemap.xml file containing various configurations and parameters. Store typemap.xml in $map_dir
-
-# d. Import polygons taking help from https://sumo.dlr.de/docs/Networks/Import/OpenStreetMap.html#importing_additional_polygons_buildings_water_etc
-
+6. Import polygons taking help from [Adding polygons](https://sumo.dlr.de/docs/Networks/Import/OpenStreetMap.html#importing_additional_polygons_buildings_water_etc)
+```
 polyconvert --net-file map.net.xml --osm-files map.osm --type-file typemap.xml -o map.poly.xml
 
-# e. Run this to generate random trips, specify end time using -e
+# Run this to generate random trips, specify end time using -e
 python /usr/share/sumo/tools/randomTrips.py -n map.net.xml -e 99 -l
 python /usr/share/sumo/tools/randomTrips.py -n map.net.xml -r map.rou.xml -e 99 -l
 
-# f. Create a map.sumo.cfg file and run following steps
+# Create a map.sumo.cfg file and run following steps
 sumo -c map.sumo.cfg
 sumo -c map.sumo.cfg —-fcd-output maptrace.xml
-
-# g. Now, run traceExporter.py present in /usr/share/sumo/tools to export simulation into format that ns-3 undestands
-python /usr/share/sumo/tools/traceExporter.py -i trace.xml --ns2mobility-output=/home/$USERNAME/$some_desired_output_path/mobility.tcl
-
 ```
+7. Now, run traceExporter.py present in /usr/share/sumo/tools to export simulation into format that ns-3 undestands
+```
+python /usr/share/sumo/tools/traceExporter.py -i trace.xml --ns2mobility-output=/home/$USERNAME/$some_desired_output_path/mobility.tcl
+```
+
 
 
