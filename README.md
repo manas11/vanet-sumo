@@ -1,107 +1,143 @@
 # Routing in VANET using ns-3
-VANET stands for Vehicular Ad hoc Network. We will be simulating VANET using ns-3's program [vanet-routing-compare.cc](https://gitlab.com/nsnam/ns-3-dev/-/blob/master/src/wave/examples/vanet-routing-compare.cc)
+ Simulation of Robust Rate Adaption Algorithm on VANET on ns-3 simulator using [vanet-routing-compare.cc](https://gitlab.com/nsnam/ns-3-dev/-/blob/master/src/wave/examples/vanet-routing-compare.cc)
 
-#### Tools required:
-- [NS-3.30 (Network Simulator)](https://www.nsnam.org/releases/ns-3-30/)
-- [SUMO (Simulation of Urban MObility)](https://sumo.dlr.de/docs/index.html)
+## Contents
 
-## Setting up simulation
+- [Routing in VANET using ns-3](#routing-in-vanet-using-ns-3)
+  - [Contents](#contents)
+  - [Vehicular Ad hoc Network &uarr;](#vehicular-ad-hoc-network-)
+  - [Robust Rate Adaption Algorithm &uarr;](#robust-rate-adaption-algorithm-)
+  - [Building and Running &uarr;](#building-and-running-)
+  - [Simulation setup &uarr;](#simulation-setup-)
+  - [Results and Analysis &uarr;](#results-and-analysis-)
+  - [Observations &uarr;](#observations-)
+  - [Contact &uarr;](#contact-)
 
-### 1. Installing SUMO
-> Setup as per Ubuntu 20.04 LTS
+## Vehicular Ad hoc Network [&uarr;](#contents)
+VANETs  are  distributed,  self-organizing communication networks built up from traveling vehicles, and are thus characterized by very high speed andlimited degrees of freedom in nodes movement patterns. Such particular features often make standard networking protocolsinefficient or unusable in VANETs.[(src)](https://ieeexplore.ieee.org/abstract/document/4127230)
 
-Run following commands to install latest version of SUMO.
+## Robust Rate Adaption Algorithm [&uarr;](#contents)
 
-```
-sudo add-apt-repository ppa:sumo/stable
-sudo apt-get update
-sudo apt-get install sumo sumo-tools sumo-doc
-```
+ Robust Rate Adaption Algorithm uses short-term loss ratio to opportunistically guide its rate change decisions, andan adaptive RTS filter to prevent collision losses from triggering rate decrease
 
-> Check your SUMO version using `sumo --version`
+ RRAA has two components:
+ * **Short-term loss ratio(RRAA-basic):** to assess the channel and opportunistically adapt the runtime transmission rate. 
+ * **Adaptive RTS filter:** to filter out collision losses with small overhead.
 
-### 2. Downloading Map of area where simulation is to be run, and converting to ns-3 understandable format
-There are 2 ways to export map of area where simulation is to be run:
-> Step I is preferrable as it offers an interactive UI for setting up various parameters.
-> Refer [SUMO Tutorials](https://sumo.dlr.de/docs/Tutorials.html) for more details about SUMO related steps
+ ### RRAA-basic
+ All the parameters vary depending on the transmission rate. Three parameters:
+* Estimation window size(ewnd): Whenever a new rate is chosen, it is used to transmit the next ewnd frames. Around 5- 40 frames.
+ * Maximum Tolerable Loss threshold (MTL): The maximum loss ratio tolerable after which the transmission rate is decreased. 
+ * Opportunistic Rate Increase threshold (ORI): The loss ratio after which the transmission rate is increased. 
 
-### I. Using osmWebWizard.py wizard
-Once SUMO is installed using above steps, check the installation folder for it. Mostly it will be: **/usr/share/sumo/tools**
-1. Enter Tools directory for SUMO
+**Algorithm:**
 ```
-cd /usr/share/sumo/tools/
-```
-2. Run the OSM web wizard, an interactive UI will be opened in the default browser.
-```
-python osmWebWizard.py
-```
-3. Using options and configurations available in the right tab, set parameters for your map.
-```
-a. Select the area 
-b. Set Duration
-c. Click on Car Label and set number of Cars and other vehicles to simulate.
-d. Set other desired parameters
-```
-4. Once all params are set, Click on Generate scenario button on top tight corner of the webpage.
-> This will create some important files in the SUMO user files folder, which is by default **/home/$USERNAME/Sumo**
-5. Enter Sumo user files directory
-```
-cd /home/$USERNAME/Sumo/
-
-# You will be able to see the directory of scenario with timestamp, Enter that directory
-cd 2020-11-18-21-19-33/ #(For example)
-
-# Now, do ls to see all generated files
-ls
-
-# Sample output: 
-build.bat         osm.net.xml              osm.poly.xml  run.bat*
-osm_bbox.osm.xml  osm.passenger.trips.xml  osm.sumocfg   trace.xml
-osm.netccfg       osm.polycfg              osm.view.xml  true
-```
-6. Now, generate **trace.xml** and **.tcl** files
-```
-# While in the scenario's timestamp directory, Run
-sumo -c osm.sumocfg --fcd-output trace.xml # A trace.xml file will be generated in this directory
-
-# Now, run traceExporter.py present in /usr/share/sumo/tools to export simulation into format that ns-3 undestands
-python /usr/share/sumo/tools/traceExporter.py -i trace.xml --ns2mobility-output=/home/$USERNAME/$some_desired_output_path/mobility.tcl
-```
-7. We have **mobility.tcl** file which will be used when running vanet-routing-compare.cc.
-
-### II. Using OpenStreetMap's website 
-1. Visit [OpenStreetMap Website](https://www.openstreetmap.org).
-2. Search for the area where you want to run simulation
-3. Click on Export button at the top left, and download the .OSM file. Store this .osm file(assuming name as map.osm) in some directory(assuming it to be $map_dir)
-4. Now run below mentioned steps:
-```
-# a. Enter map_dir 
-cd $map_dir
-
-# b. Run this command
-netconvert --osm-files map.osm -o map.net.xml
-```
-5. Visit Recommended typemaps: [Recommended typemaps](https://sumo.dlr.de/docs/Networks/Import/OpenStreetMap.html#recommended_typemaps).
-Create your typemap.xml file containing various configurations and parameters. Store typemap.xml in $map_dir
-
-6. Import polygons taking help from [Adding polygons](https://sumo.dlr.de/docs/Networks/Import/OpenStreetMap.html#importing_additional_polygons_buildings_water_etc)
-```
-polyconvert --net-file map.net.xml --osm-files map.osm --type-file typemap.xml -o map.poly.xml
-
-# Run this to generate random trips, specify end time using -e
-python /usr/share/sumo/tools/randomTrips.py -n map.net.xml -e 99 -l
-python /usr/share/sumo/tools/randomTrips.py -n map.net.xml -r map.rou.xml -e 99 -l
-
-# Create a map.sumo.cfg file and run following steps
-sumo -c map.sumo.cfg
-sumo -c map.sumo.cfg —-fcd-output maptrace.xml
-```
-7. Now, run traceExporter.py present in /usr/share/sumo/tools to export simulation into format that ns-3 undestands
-```
-python /usr/share/sumo/tools/traceExporter.py -i trace.xml --ns2mobility-output=/home/$USERNAME/$some_desired_output_path/mobility.tcl
+R=highest_rate;
+counter=ewnd(R);
+while true do
+  rcv_tx_status(last_frame);
+  P = update_loss_ratio();
+  if( counter == 0 )
+    if (P > PMTL) then R = next_lower_rate();
+    elseif (P < PORI) then R = next_high_rate();
+    counter = ewnd(R);
+  send(next_frame,R);
+  counter--;
 ```
 
-### 3. Make changes in ns-3 vanet-routing-compare.cc and run program 
+### Adaptive RTS filter [&uarr;](#contents)
 
+The following parameteres are used in the Adaptive RTS filter component:
+* RTSWnd = Number of data frames to be sent with RTS frames.
+* RTScounter = Counter to keep track of number of data frames already sent with RTS.
+* RTSOn =  True implies RTS is being sent while transmission.
 
+**Algorithm:**
+```
+RTSWnd = 0;
+RTScounter = 0;
+while true do
+  rcv_tx_status(last_frame)
+  if(!RTSOn and !Success) then
+     RTSWnd++;
+     RTScounter = RTSWnd;
+   elseif(RTSOn xor Success) then
+     RTSWnd = RTSWnd/2;
+     RTScounter = RTSWnd;
+   if(RTScounter > 0) then
+     TurnOnRTS(next_frame);
+     RTScounter--;
+```
 
+### RRAA Algorithm
+```
+while true do
+ rcv_tx_status(last_frame);
+ A-RTS();
+ if(!RTSFail) then
+    RRAA_BASIC();
+    if(RTSWnd > 3) then
+       fix_re_tx_rate();
+
+```
+
+## Building and Running [&uarr;](#contents)
+
+The simulation is run on ns-3 simulator program. The map data is created using OpenStreetMap. More detail on building and running the simulation can be found [here](./RUN.md).
+
+## Simulation setup [&uarr;](#contents)
+
+The simulation is run on the map of three cities Bangalore, Gorakhpur and Indore. The OSM data as well as te mobility file can be found inside `<city-name>/map-data`. The output obtained are stored in `<city-name>/<simulation-name>/<RAA-output>`.
+
+The simulation is run for 300seconds with 32 vehicles on three different rate adpatation alogirthms already implemented in ns-3;
+Constant Rate, RRAA and ARF. Two different data rate are chosen for the simulation `2048Kbps` and `10Mbps`.
+
+The following parameter are used/modified based on the need to run the simulations.
+
+`m_traceFile`: The ns2 mobility file to run the simulation.
+
+`m_nNodes`: Number of nodes/vehicles used to run the simulation.
+
+`m_nodeSpeed`: Defined the speed of the nodes. It is set to 0 for static(non-moving) nodes.
+
+`m_rate`: Data rate of the transmission.
+
+The below table summarizes the different valued of parameters.
+
+| Paramtere                       | Static Simulation 1 | Moving simulation 1 | Static Simulation 2 | Moving simulation 2 |
+|---------------------------------|---------------------|---------------------|---------------------|---------------------|
+| Average speed of the nodes      | 0m/s                | **10m/s**           | 0m/s                | **10m/s**           |
+| Environment                     | Urban               | Urban               | Urban               | Urban               |
+| No of vehicles                  | 32                  | 32                  | 32                  | 32                  |
+| Connectivity Range of the nodes | 50m-500m            | 50m-500m            | 50m-500m            | 50m-500m            |
+| Routing protocol                | AODV                | AODV                | AODV                | AODV                |
+| Packet size                     | 200 Bytes           | 200 Bytes           | 200 Bytes           | 200 Bytes           |
+| Time of simulation              | 300sec              | 300sec              | 300sec              | 300sec              |
+| Data source rate                | 2048bps             | 2048bps             | **10Mbps**          | **10Mbps**          |
+| MAC                             | IEEE 802.11p        | IEEE 802.11p        | IEEE 802.11p        | IEEE 802.11p        |
+
+## Results and Analysis [&uarr;](#contents)
+
+## Observations [&uarr;](#contents)
+
+## Contact [&uarr;](#contents)
+
+This project and repository is created and maintained by:
+
+* **Manas Gupta**
+
+ Email: manasgupta1109@gmail.com
+    
+ Github: [manas11](https://github.com/manas11)
+    
+* **Animesh Kumar**
+
+ Email: animuz111@gmail.com
+    
+ Github: [animeshk08](https://github.com/animeshk08)
+
+ * **Ayush Kumar**
+
+ Email: a.ayushkumar1997@gmail.com
+    
+ Github: [ayush4190](https://github.com/ayush4190)
