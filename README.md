@@ -1,17 +1,17 @@
 # Routing in VANET using ns-3
- Simulation of Robust Rate Adaption Algorithm on VANET on ns-3 simulator using [vanet-routing-compare.cc](https://gitlab.com/nsnam/ns-3-dev/-/blob/master/src/wave/examples/vanet-routing-compare.cc)
+ Simulation of Robust Rate Adaption Algorithm on VANET on ns-3 simulator using [vanet-routing-compare.cc](https://gitlab.com/nsnam/ns-3-dev/-/blob/master/src/wave/examples/vanet-routing-compare.cc).
 
 ## Contents
 
 - [Routing in VANET using ns-3](#routing-in-vanet-using-ns-3)
   - [Contents](#contents)
-  - [Vehicular Ad hoc Network &uarr;](#vehicular-ad-hoc-network-)
-  - [Robust Rate Adaption Algorithm &uarr;](#robust-rate-adaption-algorithm-)
-  - [Building and Running &uarr;](#building-and-running-)
-  - [Simulation setup &uarr;](#simulation-setup-)
-  - [Results and Analysis &uarr;](#results-and-analysis-)
-  - [Observations &uarr;](#observations-)
-  - [Contact &uarr;](#contact-)
+  - [Vehicular Ad hoc Network](#vehicular-ad-hoc-network-)
+  - [Robust Rate Adaption Algorithm](#robust-rate-adaption-algorithm-)
+  - [Building and Running](#building-and-running-)
+  - [Simulation setup](#simulation-setup-)
+  - [Results and Analysis](#results-and-analysis-)
+  - [Observations](#observations-)
+  - [Contact](#contact-)
 
 ## Vehicular Ad hoc Network [&uarr;](#contents)
 VANETs  are  distributed,  self-organizing communication networks built up from traveling vehicles, and are thus characterized by very high speed andlimited degrees of freedom in nodes movement patterns. Such particular features often make standard networking protocolsinefficient or unusable in VANETs.[(src)](https://ieeexplore.ieee.org/abstract/document/4127230)
