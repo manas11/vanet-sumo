@@ -155,6 +155,18 @@ The plot of Average routing goodput for each of the city for the algorithms ARF,
 
 <img src="./images/goodput_10Mbps.png" height="300"/>
 
+The plot of Average routing goodput for Bangalore for the algorithms ARF, constant rate and RRAA with different number of cars:
+
+<img src="./images/Bangalore.png" height="300"/>
+
+The plot of Average routing goodput for Indore for the algorithms ARF, constant rate and RRAA with different number of cars:
+
+<img src="./images/Indore.png" height="300"/>
+
+The plot of Average routing goodput for Gorakhpur for the algorithms ARF, constant rate and RRAA with different number of cars:
+
+<img src="./images/Gorakhpur.png" height="300"/>
+
 ## Observations [&uarr;](#contents)
 
 ## Contact [&uarr;](#contents)
