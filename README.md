@@ -5,16 +5,13 @@
 
 - [Routing in VANET using ns-3](#routing-in-vanet-using-ns-3)
   - [Contents](#contents)
-  - [Vehicular Ad hoc Network &uarr;](#vehicular-ad-hoc-network-)
-  - [Robust Rate Adaption Algorithm &uarr;](#robust-rate-adaption-algorithm-)
-    - [RRAA-basic](#rraa-basic)
-    - [Adaptive RTS filter &uarr;](#adaptive-rts-filter-)
-    - [RRAA Algorithm](#rraa-algorithm)
-  - [Building and Running &uarr;](#building-and-running-)
-  - [Simulation setup &uarr;](#simulation-setup-)
-  - [Results and Analysis &uarr;](#results-and-analysis-)
-  - [Observations &uarr;](#observations-)
-  - [Contact &uarr;](#contact-)
+  - [Vehicular Ad hoc Network](#vehicular-ad-hoc-network-)
+  - [Robust Rate Adaption Algorithm](#robust-rate-adaption-algorithm-)
+  - [Building and Running](#building-and-running-)
+  - [Simulation setup](#simulation-setup-)
+  - [Results and Analysis](#results-and-analysis-)
+  - [Observations](#observations-)
+  - [Contact](#contact-)
 
 ## Vehicular Ad hoc Network [&uarr;](#contents)
 VANETs  are  distributed,  self-organizing communication networks built up from traveling vehicles, and are thus characterized by very high speed andlimited degrees of freedom in nodes movement patterns. Such particular features often make standard networking protocolsinefficient or unusable in VANETs.[(src)](https://ieeexplore.ieee.org/abstract/document/4127230)
@@ -27,9 +24,9 @@ VANETs  are  distributed,  self-organizing communication networks built up from 
  * **Short-term loss ratio(RRAA-basic):** to assess the channel and opportunistically adapt the runtime transmission rate. 
  * **Adaptive RTS filter:** to filter out collision losses with small overhead.
 
- ### RRAA-basic
+### RRAA-basic [&uarr;](#contents)
  All the parameters vary depending on the transmission rate. Three parameters:
-* Estimation window size(ewnd): Whenever a new rate is chosen, it is used to transmit the next ewnd frames. Around 5- 40 frames.
+ * Estimation window size(ewnd): Whenever a new rate is chosen, it is used to transmit the next ewnd frames. Around 5- 40 frames.
  * Maximum Tolerable Loss threshold (MTL): The maximum loss ratio tolerable after which the transmission rate is decreased. 
  * Opportunistic Rate Increase threshold (ORI): The loss ratio after which the transmission rate is increased. 
 
@@ -72,7 +69,7 @@ while true do
      RTScounter--;
 ```
 
-### RRAA Algorithm
+### RRAA Algorithm [&uarr;](#contents)
 ```
 while true do
  rcv_tx_status(last_frame);
