@@ -108,8 +108,6 @@ The following parameter are used/modified based on the need to run the simulatio
 
 `m_nNodes`: Number of nodes/vehicles used to run the simulation.
 
-`m_nodeSpeed`: Defined the speed of the nodes. It is set to 0 for static(non-moving) nodes.
-
 `m_rate`: Data rate of the transmission.
 
 The simulation can be run using the below command when the file is present in scratch directory.

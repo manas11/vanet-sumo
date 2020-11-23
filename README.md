@@ -5,13 +5,16 @@
 
 - [Routing in VANET using ns-3](#routing-in-vanet-using-ns-3)
   - [Contents](#contents)
-  - [Vehicular Ad hoc Network](#vehicular-ad-hoc-network-)
-  - [Robust Rate Adaption Algorithm](#robust-rate-adaption-algorithm-)
-  - [Building and Running](#building-and-running-)
-  - [Simulation setup](#simulation-setup-)
-  - [Results and Analysis](#results-and-analysis-)
-  - [Observations](#observations-)
-  - [Contact](#contact-)
+  - [Vehicular Ad hoc Network &uarr;](#vehicular-ad-hoc-network-)
+  - [Robust Rate Adaption Algorithm &uarr;](#robust-rate-adaption-algorithm-)
+    - [RRAA-basic](#rraa-basic)
+    - [Adaptive RTS filter &uarr;](#adaptive-rts-filter-)
+    - [RRAA Algorithm](#rraa-algorithm)
+  - [Building and Running &uarr;](#building-and-running-)
+  - [Simulation setup &uarr;](#simulation-setup-)
+  - [Results and Analysis &uarr;](#results-and-analysis-)
+  - [Observations &uarr;](#observations-)
+  - [Contact &uarr;](#contact-)
 
 ## Vehicular Ad hoc Network [&uarr;](#contents)
 VANETs  are  distributed,  self-organizing communication networks built up from traveling vehicles, and are thus characterized by very high speed andlimited degrees of freedom in nodes movement patterns. Such particular features often make standard networking protocolsinefficient or unusable in VANETs.[(src)](https://ieeexplore.ieee.org/abstract/document/4127230)
@@ -98,25 +101,62 @@ The following parameter are used/modified based on the need to run the simulatio
 
 `m_nNodes`: Number of nodes/vehicles used to run the simulation.
 
-`m_nodeSpeed`: Defined the speed of the nodes. It is set to 0 for static(non-moving) nodes.
-
 `m_rate`: Data rate of the transmission.
 
 The below table summarizes the different valued of parameters.
 
-| Paramtere                       | Static Simulation 1 | Moving simulation 1 | Static Simulation 2 | Moving simulation 2 |
-|---------------------------------|---------------------|---------------------|---------------------|---------------------|
-| Average speed of the nodes      | 0m/s                | **10m/s**           | 0m/s                | **10m/s**           |
-| Environment                     | Urban               | Urban               | Urban               | Urban               |
-| No of vehicles                  | 32                  | 32                  | 32                  | 32                  |
-| Connectivity Range of the nodes | 50m-500m            | 50m-500m            | 50m-500m            | 50m-500m            |
-| Routing protocol                | AODV                | AODV                | AODV                | AODV                |
-| Packet size                     | 200 Bytes           | 200 Bytes           | 200 Bytes           | 200 Bytes           |
-| Time of simulation              | 300sec              | 300sec              | 300sec              | 300sec              |
-| Data source rate                | 2048bps             | 2048bps             | **10Mbps**          | **10Mbps**          |
-| MAC                             | IEEE 802.11p        | IEEE 802.11p        | IEEE 802.11p        | IEEE 802.11p        |
+| Paramtere                       | Simulation 1        | Simulation 2        | Simulation 3        |  Simulation 4       | Simulation 5 |
+|---------------------------------|---------------------|---------------------|---------------------|---------------------|--------------|
+| Average speed of the nodes      | 20m/s               | 20m/s               | 20m/s               | 20m/s               | 20m/s        |
+| Environment                     | Urban               | Urban               | Urban               | Urban               | Urban        |
+| No of vehicles                  | 32                  | 32                  | **20**              | **64**              | **128**      |
+| Connectivity Range of the nodes | 50m-500m            | 50m-500m            | 50m-500m            | 50m-500m            | 50m-500m     |
+| Routing protocol                | AODV                | AODV                | AODV                | AODV                | AODV         |
+| Packet size                     | 200 Bytes           | 200 Bytes           | 200 Bytes           | 200 Bytes           | 200 Bytes    |
+| Time of simulation              | 300sec              | 300sec              | 300sec              | 300sec              | 300sec       |
+| Data source rate                | 2048bps             | **10Mbps**          | 2048bps             | 2048bps             | 2048bps      |
+| MAC                             | IEEE 802.11p        | IEEE 802.11p        | IEEE 802.11p        | IEEE 802.11p        | IEEE 802.11p |       
 
 ## Results and Analysis [&uarr;](#contents)
+
+The OSM map and associated files are present in the directory `<city-name>/map-data`. Below is an example of the map of Indore taken for simulations.
+
+<img src="./indore/MapSelected.png"  height="200"/>
+
+The below table summarized the results obtained for various simulations:
+
+
+
+
+The Netanim simulation file if also generated for each of the simultion. Below is an example of the Netanim simulation for [Moving- Simulation-1-2048bps for the RRAA algorithm](./indore/Moving-Simulation-1-2048bps/RRAA-output/indore-RRAA.xml).
+
+<img src="./indore/Simulation-1-32cars-2048bps/RRAA-output/indore-RRAA-moving-netAnim.png" height="200"/>
+
+The below table summarized the result obatined for different cities at different data rates:
+
+<img src="./images/vanet_result.png" height="200"/>
+
+The Attributes obtained from the results are as follows:
+- `BSM_PDR1`: The packet drop ratio for a safety packet at 50 m.
+- `BSM_PDR2`: The packet drop ratio for a safety packet at 100 m.
+- `BSM_PDR3`: The packet drop ratio for a safety packet at 150 m.
+- `BSM_PDR4`: The packet drop ratio for a safety packet at 200 m.
+- `BSM_PDR5`: The packet drop ratio for a safety packet at 250 m.
+- `BSM_PDR6`: The packet drop ratio for a safety packet at 300 m.
+- `BSM_PDR7`: The packet drop ratio for a safety packet at 350 m.
+- `BSM_PDR8`: The packet drop ratio for a safety packet at 400 m.
+- `BSM_PDR9`: The packet drop ratio for a safety packet at 450 m.
+- `BSM_PDR10`: The packet drop ratio for a safety packet at 500 m.
+- `AverageRoutingGoodputKbps`: The average Goodput obtained in Kbps.
+- `MacPhyOverhead`: MAC/PHY overhead is the extra bits added in the packet along with the actual message at MAC layer and Physical layer. 
+
+The plot of Average routing goodput for each of the city for the algorithms ARF, constant rate and RRAA at 2048bps is below:
+
+<img src="./images/goodput_2048bps.png" height="300"/>
+
+The plot of Average routing goodput for each of the city for the algorithms ARF, constant rate and RRAA at 10Mbps is below:
+
+<img src="./images/goodput_10Mbps.png" height="300"/>
 
 ## Observations [&uarr;](#contents)
 
