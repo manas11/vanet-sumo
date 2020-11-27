@@ -218,6 +218,30 @@ The plot of Average routing goodput for Gorakhpur for the algorithms ARF, consta
 
 ## Observations [&uarr;](#contents)
 
+Based on our simualations and above mentioned results, we found that the behaviour VANETs were higly dependent on the topology which in turn were dependent on the map of the region deployed as well the number of nodes.
+
+**Observations on average throughput in different cities**
+* The simulations were done on the map of three cities: Bangalore, Gorakhpur and Indore. The general observation in all the three cases were that, Constant rate had throughput close to that of ARF. However, RRAA was highly outperformed by both ARF and Constant Rate. This behaviour can be explained due to the low estimation windows in case of RRAA for smaller datarates as shown below. Thus  RRAA uses a smaller number of packets' loss stattics the calculation of the Packet Loss Ratio as compared to ARF which uses on 10 successfull ACK for moving to higher datarates. Thus due to the highly changing topology of the VANET's smaller estimation windows may lead to only instantaneous measurements rather the average behaviour of the network.
+
+<img src="./images/RRAA_ewnd.png" height="150"/>
+
+* RRAA’s approach is to minimize the delay due to the estimation window by using a short-term loss ratio and making the estimation window’s size adaptive. The problem with a adaptiuve estimation window size, especially during contention from multiple active clients, is that the client needs to get enough frame transmission statistics in this time, or else a statistically small number of samples may yield inaccurate rate adaptation.
+
+* The reson for low throughput for both ARF and RRAA in case of VANETs can be justified as these rate adaptation algorithms use the number of successful transmission and loss statistics acquired by means of ACK or RTS/CTS (Request to Send/ Clear to Send) messages, which cannot be applied to broadcasting. This becomes promiment in the case of VANETs which have a highly changing topology sructure as well as the number of nodes. 
+
+**Observations on change in vehicle number**
+* Our simulation based for varying vehicle numbers were also insightful. We found that general behaviour in the three cities was that Constant rate had an increase in throughput with increase in vehicle number from 20 to 128 as the number of transmission had increased. Eventhough there was high congestion at higher number of vehicles since constant rate in not sensitive to collision or channel conditions the transmission continued at the set data rate.
+
+  NOTE: Bangalore had a different behaviour for constant rate. 
+
+* ARF is sentitive to only the channel condition and not collision hence when the network got congested at 64 nodes there was a sharp decrease in the throughput. On the other hand RRAA uses an adaptive RTS-filter to differentiate between collision and deterioration in channel conditions. Thus the decrease in the throughput in the case of RRAA was not as sharp as ARF which can be seen from the above mentioned line graphs.
+
+* Both ARF and RRAA had an increase in throughput for 128 cars for the maps of Indore and Bangalore. This may be beacuse the number of transmission connections had outweighed the number of collision. Thus the VANET network was behaving as a tightly coupled wireless network.
+
+
+
+
+
 ## Contact [&uarr;](#contents)
 
 This project and repository is created and maintained by:
